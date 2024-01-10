@@ -1,0 +1,24 @@
+<html>
+<head></head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+<div id="my_app">
+   <input v-model="n" type="number"><br>
+   <button @click="onAdd">Add</button>
+</div>
+<span wicket:id="total"></span>
+<script>
+var app = Vue.createApp({
+  data() {
+    return {n: null};
+  },
+  methods: {
+    onAdd() {
+      ajaxAddNum({n: this.n});
+    }
+  }
+});
+app.mount('#my_app')
+</script>
+</body>
+</html>

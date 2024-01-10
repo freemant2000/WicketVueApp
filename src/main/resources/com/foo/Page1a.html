@@ -1,0 +1,28 @@
+<html>
+<head></head>
+<body>
+<span wicket:id="lbl"></span>
+<div id="my_app">
+    <button @click="onChange">Change</button>
+    <div>{{msg}}</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js">
+</script>
+<script type="text/javascript">
+var app = Vue.createApp({
+  data: function() {
+    return { msg: "" };
+  },
+  methods: {
+    async onChange() {
+        this.msg="Saving to the server";
+        var p=ajaxChange1({n: 333});
+        await p;
+        this.msg="Saved";
+    }
+  }
+});
+app.mount('#my_app')
+</script>
+</body>
+</html>

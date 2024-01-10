@@ -1,0 +1,19 @@
+<html>
+<head></head>
+<body>
+<div id="my_app">
+    <input v-model="n" @input="inpChg"><span>{{price}}</span>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js">
+</script>
+<script type="text/javascript">
+var app = Vue.createApp({
+  data() { return {n: "", price: 0};  },
+  methods: {
+    async inpChg() { this.price=await ajaxGetPrice({n: this.n}); }
+  }
+});
+app.mount('#my_app')
+</script>
+</body>
+</html>
