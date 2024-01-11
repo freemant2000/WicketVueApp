@@ -2,17 +2,13 @@ package com.ttdev;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.MarkupStream;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.template.PackageTextTemplate;
@@ -24,18 +20,18 @@ import java.util.Map;
 
 public class WicketVueApp extends Panel {
   public static final String PARAM_NAME_EVENT_DATA = "eventData";
-  private Map<String, Object> state;
+  private IModel<? extends Map<String, Object>> state;
   private final AbstractDefaultAjaxBehavior ajaxBe;
   private final String appDivId;
   private final String vueTemplate;
   private final String vueMethods;
   private String vueUrl="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js";
 
-  public WicketVueApp(String id, Map<String, Object> state, String vueTemplate) {
+  public WicketVueApp(String id, IModel<? extends  Map<String, Object>> state, String vueTemplate) {
     this(id, state, vueTemplate, "");
   }
 
-  public WicketVueApp(String id, Map<String, Object> state, String vueTemplate, String vueMethods) {
+  public WicketVueApp(String id, IModel<? extends Map<String, Object>> state, String vueTemplate, String vueMethods) {
     super(id);
     this.state = state;
     this.vueTemplate = vueTemplate;
@@ -52,7 +48,7 @@ public class WicketVueApp extends Panel {
         String json = RequestCycle.get().getRequest().getRequestParameters().getParameterValue(PARAM_NAME_EVENT_DATA).toString();
         Map<String, Object> data = getDataFromJson(json);
         Map<String, Object> newState = (Map<String, Object>) data.remove("state");
-        state.putAll(newState);
+        state.getObject().putAll(newState);
         String route = (String) data.remove("route");
         if (route.isEmpty()) {
           WicketVueApp.this.onVueEvent(target, data);
@@ -84,7 +80,7 @@ public class WicketVueApp extends Panel {
   private String getStateAsJsObj() {
     ObjectMapper om = new ObjectMapper();
     try {
-      String json = om.writeValueAsString(state);
+      String json = om.writeValueAsString(state.getObject());
       return json;
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
