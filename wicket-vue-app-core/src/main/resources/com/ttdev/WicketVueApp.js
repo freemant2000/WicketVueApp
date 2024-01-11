@@ -1,3 +1,5 @@
+import * as Vue from '${vueUrl}';
+
 var app = Vue.createApp({
   data() {
     return ${initData};
