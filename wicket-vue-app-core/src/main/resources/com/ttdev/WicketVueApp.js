@@ -1,5 +1,3 @@
-import * as Vue from '${vueUrl}';
-
 var app = Vue.createApp({
   data() {
     return ${initData};
@@ -14,6 +12,8 @@ var app = Vue.createApp({
         if (typeof(route)=="object") {
           ev=route;
           route="";
+        } else {
+          ev={}
         }
       }
       Object.assign(ev, {route: route, state: this.$data});
@@ -26,4 +26,5 @@ var app = Vue.createApp({
    this.$el.parentElement.myVueInst=this;
  }
 });
+${useLibs}
 app.mount('#${appDivId}')

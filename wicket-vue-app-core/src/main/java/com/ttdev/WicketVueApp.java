@@ -2,11 +2,17 @@ package com.ttdev;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.markup.head.CssUrlReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptUrlReferenceHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -15,7 +21,9 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.apache.wicket.util.template.TextTemplate;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WicketVueApp extends Panel {
@@ -25,9 +33,12 @@ public class WicketVueApp extends Panel {
   private final String appDivId;
   private final String vueTemplate;
   private final String vueMethods;
-  private String vueUrl="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js";
+  private String vueUrl = "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js";
+  private List<String> useLibs;
+  private List<String> libUrls;
+  private List<String> cssUrls;
 
-  public WicketVueApp(String id, IModel<? extends  Map<String, Object>> state, String vueTemplate) {
+  public WicketVueApp(String id, IModel<? extends Map<String, Object>> state, String vueTemplate) {
     this(id, state, vueTemplate, "");
   }
 
@@ -36,6 +47,10 @@ public class WicketVueApp extends Panel {
     this.state = state;
     this.vueTemplate = vueTemplate;
     this.vueMethods = vueMethods;
+    useLibs= new ArrayList<>();
+    libUrls = new ArrayList<>();
+    libUrls.add(vueUrl);
+    cssUrls = new ArrayList<>();
     ajaxBe = new AbstractDefaultAjaxBehavior() {
       @Override
       protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
@@ -60,7 +75,7 @@ public class WicketVueApp extends Panel {
             throw new RuntimeException(e);
           }
         }
-        target.appendJavaScript(String.format("Object.assign(document.getElementById('%s').myVueInst.$data, %s)", appDivId, getStateAsJsObj()));
+        refresh(target);
       }
     };
     add(ajaxBe);
@@ -68,9 +83,29 @@ public class WicketVueApp extends Panel {
     appDiv.setOutputMarkupId(true);
     appDivId = appDiv.getMarkupId();
     add(appDiv);
-    Label jsLbl =new Label("jsCode", new PropertyModel<String>(this, "jsCode"));
+    ListView<String> jsLibs=new ListView<String>("jsLibs", libUrls) {
+      @Override
+      protected void populateItem(ListItem<String> item) {
+          item.add(new AttributeModifier("src", item.getModelObject()));
+      }
+    };
+    add(jsLibs);
+    Label jsLbl = new Label("jsCode", new PropertyModel<String>(this, "jsCode"));
     jsLbl.setEscapeModelStrings(false);
     add(jsLbl);
+  }
+
+  public void useQuasar() {
+    useLibs.add("Quasar");
+    cssUrls.add("https://cdn.jsdelivr.net/npm/quasar@2.14.2/dist/quasar.css");
+    libUrls.add("https://cdn.jsdelivr.net/npm/quasar@2.14.2/dist/quasar.umd.js");
+  }
+
+  @Override
+  public void renderHead(IHeaderResponse response) {
+    for (String url: cssUrls) {
+      response.render(CssUrlReferenceHeaderItem.forUrl(url));
+    }
   }
 
   public void setVueUrl(String vueUrl) {
@@ -86,6 +121,7 @@ public class WicketVueApp extends Panel {
       throw new RuntimeException(e);
     }
   }
+
   private Map<String, Object> getDataFromJson(String json) {
     ObjectMapper om = new ObjectMapper();
     try {
@@ -95,19 +131,27 @@ public class WicketVueApp extends Panel {
       throw new RuntimeException(e);
     }
   }
-    public String getJsCode() {
+
+  public String getJsCode() {
+    StringBuffer useLibsCode=new StringBuffer();
+    for (String u: useLibs) {
+      useLibsCode.append(String.format("app.use(%s);", u));
+    }
     TextTemplate tt = new PackageTextTemplate(this.getClass(), "WicketVueApp.js");
     Map<String, String> bindings = new HashMap<>();
-    bindings.put("vueUrl", vueUrl);
     bindings.put("initData", getStateAsJsObj());
     bindings.put("ajaxCall", ajaxBe.getCallbackFunctionBody().toString());
     bindings.put("appDivId", appDivId);
     bindings.put("vueTemplate", vueTemplate);
     bindings.put("vueMethods", vueMethods);
+    bindings.put("useLibs", useLibsCode.toString());
     String jsCode = tt.asString(bindings);
     return jsCode;
   }
 
+  public void refresh(AjaxRequestTarget target) {
+    target.appendJavaScript(String.format("Object.assign(document.getElementById('%s').myVueInst.$data, %s)", appDivId, getStateAsJsObj()));
+  }
 
   public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
 

@@ -7,10 +7,10 @@ import java.util.HashMap;
 
 public class InitialDataDemo extends WebPage {
   public InitialDataDemo() {
-    HashMap<String, Object> state = new HashMap<String, Object>();
+    HashMap<String, Object> state = new HashMap<>();
     state.put("product", "Pen");
     state.put("price", 4);
-    HashMap<String, Object> styMap = new HashMap<String, Object>();
+    HashMap<String, Object> styMap = new HashMap<>();
     styMap.put("backgroundColor", "green");
     styMap.put("fontSize", "18");
     state.put("sty", styMap);
