@@ -28,3 +28,4 @@ var app = Vue.createApp({
 });
 ${useLibs}
 app.mount('#${appDivId}')
+

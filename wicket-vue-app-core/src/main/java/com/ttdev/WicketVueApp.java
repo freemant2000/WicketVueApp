@@ -2,17 +2,13 @@ package com.ttdev;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.markup.head.CssUrlReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptUrlReferenceHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -28,14 +24,16 @@ import java.util.Map;
 
 public class WicketVueApp extends Panel {
   public static final String PARAM_NAME_EVENT_DATA = "eventData";
+  private final ScriptElement vueJs;
+  private final ScriptElement quasarJs;
+  private boolean renderJsScriptElems;
+  private boolean renderCSSLinkElems;
   private IModel<? extends Map<String, Object>> state;
   private final AbstractDefaultAjaxBehavior ajaxBe;
   private final String appDivId;
   private final String vueTemplate;
   private final String vueMethods;
-  private String vueUrl = "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js";
   private List<String> useLibs;
-  private List<String> libUrls;
   private List<String> cssUrls;
 
   public WicketVueApp(String id, IModel<? extends Map<String, Object>> state, String vueTemplate) {
@@ -48,9 +46,13 @@ public class WicketVueApp extends Panel {
     this.vueTemplate = vueTemplate;
     this.vueMethods = vueMethods;
     useLibs= new ArrayList<>();
-    libUrls = new ArrayList<>();
-    libUrls.add(vueUrl);
-    cssUrls = new ArrayList<>();
+    cssUrls= new ArrayList<>();
+    renderJsScriptElems=true;
+    renderCSSLinkElems=true;
+    vueJs=makeScriptElemForVue("vueJs");
+    add(vueJs);
+    quasarJs=makeScriptElemForQuasar("quasarJs");
+    add(quasarJs);
     ajaxBe = new AbstractDefaultAjaxBehavior() {
       @Override
       protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
@@ -83,33 +85,49 @@ public class WicketVueApp extends Panel {
     appDiv.setOutputMarkupId(true);
     appDivId = appDiv.getMarkupId();
     add(appDiv);
-    ListView<String> jsLibs=new ListView<String>("jsLibs", libUrls) {
-      @Override
-      protected void populateItem(ListItem<String> item) {
-          item.add(new AttributeModifier("src", item.getModelObject()));
-      }
-    };
-    add(jsLibs);
     Label jsLbl = new Label("jsCode", new PropertyModel<String>(this, "jsCode"));
     jsLbl.setEscapeModelStrings(false);
     add(jsLbl);
   }
 
+  public void setRenderJsScriptElems(boolean render) {
+    this.renderJsScriptElems = renderJsScriptElems;
+    this.vueJs.setVisible(render);
+    this.quasarJs.setVisible(render);
+  }
+
+  public void setRenderCSSLinkElems(boolean renderCSSLinkElems) {
+    this.renderCSSLinkElems = renderCSSLinkElems;
+  }
+
+  public ScriptElement makeScriptElemForVue(String wicketId) {
+    return new ScriptElement(wicketId, getVueURL());
+  }
+  public ScriptElement makeScriptElemForQuasar(String wicketId) {
+    return new ScriptElement(wicketId, getQuasarURL());
+  }
   public void useQuasar() {
     useLibs.add("Quasar");
     cssUrls.add("https://cdn.jsdelivr.net/npm/quasar@2.14.2/dist/quasar.css");
-    libUrls.add("https://cdn.jsdelivr.net/npm/quasar@2.14.2/dist/quasar.umd.js");
   }
 
+  public String getVueURL() {
+    return "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js";
+  }
+  public String getQuasarURL() {
+    return "https://cdn.jsdelivr.net/npm/quasar@2.14.2/dist/quasar.umd.js";
+  }
   @Override
   public void renderHead(IHeaderResponse response) {
-    for (String url: cssUrls) {
-      response.render(CssUrlReferenceHeaderItem.forUrl(url));
+    if (renderCSSLinkElems) {
+      for (String url : cssUrls) {
+        response.render(CssUrlReferenceHeaderItem.forUrl(url));
+      }
     }
   }
 
-  public void setVueUrl(String vueUrl) {
-    this.vueUrl = vueUrl;
+  public List<String> getUseLibs() {
+    return useLibs;
   }
 
   private String getStateAsJsObj() {
