@@ -103,4 +103,4 @@ target to have them refreshed.
 
 ## Further functionality
 The above sums up the core functionality. To further fine-tune its behaviour, please take a look at
-the various examples.
+the various [examples](https://github.com/freemant2000/WicketVueApp/tree/master/wicket-vue-app-examples/src/main/java/com/ttdev).
