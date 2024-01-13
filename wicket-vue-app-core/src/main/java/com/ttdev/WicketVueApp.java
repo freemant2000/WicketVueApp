@@ -41,7 +41,7 @@ public class WicketVueApp extends Panel {
   }
 
   public WicketVueApp(String id, IModel<? extends Map<String, Object>> state, String vueTemplate, String vueMethods) {
-    super(id);
+    super(id, state);
     this.state = state;
     this.vueTemplate = vueTemplate;
     this.vueMethods = vueMethods;

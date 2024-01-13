@@ -16,7 +16,7 @@ public class MultiAppsDemo extends WebPage {
     WicketVueApp vwa=new WicketVueApp("wva", new Model(state), "<span :style='sty'>{{product}} on sale for {{price}}<span>");
     add(vwa);
     HashMap<String, Object> state2 = new HashMap<>();
-    WicketVueApp vwa2=new WicketVueApp("wva2", new Model(state2), "<button @click='cb();'>Click me</button>") {
+    WicketVueApp vwa2=new WicketVueApp("wva2", new Model(state2), "This is another Vue app: <button @click='cb();'>Click me</button>") {
       @Override
       public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
         state.put("price", (Integer)state.get("price")+1);
