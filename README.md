@@ -34,7 +34,10 @@ public class GetStartedDemo extends WebPage {
     HashMap<String, Object> state = new HashMap<>();
     state.put("a", 4);
     state.put("b", "Hi");
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state), "<span @click='m1()'>{{a}} {{b}}<span>", "m1() {console.log(this.a);}");
+    WicketVueApp vwa=new WicketVueApp("wva", 
+        new Model(state), 
+        "<span @click='m1()'>{{a}} {{b}}<span>",
+        "m1() {console.log(this.a);}");
     add(vwa);
   }
 }
@@ -60,7 +63,9 @@ public class GetStartedDemo extends WebPage {
     HashMap<String, Object> state = new HashMap<>();
     state.put("a", 4);
     state.put("b", "Hi");
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state), "<span @click='cb()'>{{a}} {{b}}<span>");
+    WicketVueApp vwa=new WicketVueApp("wva", 
+        new Model(state), 
+        "<span @click='cb()'>{{a}} {{b}}<span>");
     add(vwa);
   }
 }
@@ -73,7 +78,9 @@ public class GetStartedDemo extends WebPage {
     HashMap<String, Object> state = new HashMap<>();
     state.put("a", 4);
     state.put("b", "Hi");
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state), "<span @click='cb()'>{{a}} {{b}}<span>") {
+    WicketVueApp vwa=new WicketVueApp("wva", 
+        new Model(state), 
+        "<span @click='cb()'>{{a}} {{b}}<span>") {
       @Override
       public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
         state.put("b", state.get("b")+"!");
