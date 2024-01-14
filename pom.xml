@@ -14,8 +14,19 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Kent Tong</name>
+            <email>kent.tong.mo@gmail.com</email>
+            <organization>TipTec Development</organization>
+            <organizationUrl>http://www.ttdev.com</organizationUrl>
+        </developer>
+    </developers>
     <scm>
-        <url>https://github.com/freemant2000/WicketVueApp</url>
+        <connection>scm:git:git://github.com/freemant2000/WicketVueApp.git</connection>
+        <developerConnection>scm:git:ssh://github.com:freemant2000/WicketVueApp.git</developerConnection>
+        <url>https://github.com/freemant2000/WicketVueApp/tree/master</url>
     </scm>
     <modules>
         <module>wicket-vue-app-core</module>
@@ -43,6 +54,32 @@
     </dependencies>
     <build>
         <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
