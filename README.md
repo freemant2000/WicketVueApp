@@ -102,5 +102,12 @@ Note that the AjaxRequestTarget one of the parameters, you can add other ajax Wi
 target to have them refreshed.
 
 ## Further functionality
-The above sums up the core functionality. To further fine-tune its behaviour, please take a look at
-the various [examples](https://github.com/freemant2000/WicketVueApp/tree/master/wicket-vue-app-examples/src/main/java/com/ttdev).
+To further fine-tune its behaviour, please take a look at the examples
+1. [Calling different Java methods on different Vue events](https://github.com/freemant2000/WicketVueApp/tree/master/wicket-vue-app-examples/src/main/java/com/ttdev/RouteDemo.java).
+2. [Use Quasar components](https://github.com/freemant2000/WicketVueApp/tree/master/wicket-vue-app-examples/src/main/java/com/ttdev/QuasarDemo.java).
+3. [Have multiple Vue Apps on a single web page](https://github.com/freemant2000/WicketVueApp/tree/master/wicket-vue-app-examples/src/main/java/com/ttdev/MultiAppsDemo.java). This
+   also shows how to tell WicketVueApp not to output the `<script>` element for Vue js.
+4. [Refresh a Vue App when handling a normal Wicket Ajax event](https://github.com/freemant2000/WicketVueApp/tree/master/wicket-vue-app-examples/src/main/java/com/ttdev/RefreshByWicketDemo.java).
+
+## Contact
+You can contact me at [kent.tong.mo@gmail.com](mailto:kent.tong.mo@gmail.com).
