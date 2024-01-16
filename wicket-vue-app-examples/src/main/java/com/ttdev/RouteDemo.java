@@ -40,8 +40,7 @@ public class RouteDemo extends WebPage {
 
   public RouteDemo() {
     state = new HashMap<>();
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state),
-        "<button @click='cb(\"onB1Click\")'>OK</button><button @click='cb(\"onB2Click\")'>Cancel</button>") {
+    WicketVueApp vwa=new WicketVueApp("wva", new Model(state)) {
       public void onB1Click(AjaxRequestTarget target, Map<String, Object> data) {
         msg.setDefaultModelObject("B1 clicked");
         target.add(msg);

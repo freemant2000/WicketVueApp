@@ -41,8 +41,7 @@ public class VueModelDemo extends WebPage {
   public VueModelDemo() {
     state = new HashMap<>();
     state.put("v", "Hi");
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state),
-        "<input v-model='v'><button @click='cb()'>OK</button>") {
+    WicketVueApp vwa=new WicketVueApp("wva", new Model(state)) {
       @Override
       public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
         msg.setDefaultModelObject("Got: "+state.get("v"));

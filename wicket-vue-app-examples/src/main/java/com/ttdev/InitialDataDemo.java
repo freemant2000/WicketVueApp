@@ -39,7 +39,7 @@ public class InitialDataDemo extends WebPage {
     styMap.put("backgroundColor", "green");
     styMap.put("fontSize", "18");
     state.put("sty", styMap);
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state), "<span :style='sty'>{{product}} on sale for {{price}}<span>");
+    WicketVueApp vwa=new WicketVueApp("wva", new Model(state));
     add(vwa);
   }
 }

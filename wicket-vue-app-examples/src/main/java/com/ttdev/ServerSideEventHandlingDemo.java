@@ -42,8 +42,7 @@ public class ServerSideEventHandlingDemo extends WebPage {
   public ServerSideEventHandlingDemo() {
     state = new HashMap<>();
     state.put("n", 0);
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state),
-        "<span @click='cb()'>Click me: {{n}}<span>") {
+    WicketVueApp vwa=new WicketVueApp("wva", new Model(state)) {
       @Override
       public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
         state.put("n", (Integer)state.get("n")+1);

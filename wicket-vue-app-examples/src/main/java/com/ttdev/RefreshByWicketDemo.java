@@ -40,7 +40,7 @@ public class RefreshByWicketDemo extends WebPage {
   public RefreshByWicketDemo() {
     state = new HashMap<>();
     state.put("n", 0);
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state),"<span>{{n}}</span>");
+    WicketVueApp vwa=new WicketVueApp("wva", new Model(state));
     add(vwa);
     AjaxLink ok=new AjaxLink<Void>("ok") {
 

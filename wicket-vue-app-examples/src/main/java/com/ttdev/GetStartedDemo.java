@@ -37,7 +37,7 @@ public class GetStartedDemo extends WebPage {
     HashMap<String, Object> state = new HashMap<>();
     state.put("a", 4);
     state.put("b", "Hi");
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state), "<span @click='cb()'>{{a}} {{b}}<span>") {
+    WicketVueApp vwa=new WicketVueApp("wva", new Model(state)) {
       @Override
       public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
         state.put("b", state.get("b")+"!");

@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.markup.IMarkupFragment;
 import org.apache.wicket.markup.head.CssUrlReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -63,32 +64,28 @@ public class WicketVueApp extends Panel {
   private final IModel<? extends Map<String, Object>> state;
   private final AbstractDefaultAjaxBehavior ajaxBe;
   private final String appDivId;
-  private final String vueTemplate;
   private final String vueMethods;
   private final List<String> useLibs;
   private final List<String> cssUrls;
 
   /**
-   *
+   * Renders a Vue app. The Vue template should be provided in the body of the component in the markup.
    * @param id  the Wicket ID
    * @param state a Map containing the data variables for the Vue app. Typically this is {@link HashMap}, which is Serializable as required by Wicket.
-   * @param vueTemplate the template for the Vue app
    */
-  public WicketVueApp(String id, IModel<? extends Map<String, Object>> state, String vueTemplate) {
-    this(id, state, vueTemplate, "");
+  public WicketVueApp(String id, IModel<? extends Map<String, Object>> state) {
+    this(id, state, "");
   }
 
   /**
-   *
+   * Renders a Vue app. The Vue template should be provided in the body of the component in the markup.
    * @param id  the Wicket ID
    * @param state a Map containing the data variables for the Vue app
-   * @param vueTemplate the template for the Vue app
    * @param vueMethods the Vue app's methods in js code in a String
    */
-  public WicketVueApp(String id, IModel<? extends Map<String, Object>> state, String vueTemplate, String vueMethods) {
+  public WicketVueApp(String id, IModel<? extends Map<String, Object>> state, String vueMethods) {
     super(id, state);
     this.state = state;
-    this.vueTemplate = vueTemplate;
     this.vueMethods = vueMethods;
     useLibs= new ArrayList<>();
     cssUrls= new ArrayList<>();
@@ -133,6 +130,15 @@ public class WicketVueApp extends Panel {
     Label jsLbl = new Label("jsCode", new PropertyModel<String>(this, "jsCode"));
     jsLbl.setEscapeModelStrings(false);
     add(jsLbl);
+  }
+
+  public String getTemplateFromBody() {
+    IMarkupFragment markup=getMarkup();
+    StringBuffer vueTmpl=new StringBuffer();
+    for (int i=1; i<markup.size()-1; i++) {
+      vueTmpl.append(markup.get(i).toString());
+    }
+    return vueTmpl.toString();
   }
 
   /**
@@ -248,7 +254,7 @@ public class WicketVueApp extends Panel {
     bindings.put("initData", getStateAsJsObj());
     bindings.put("ajaxCall", ajaxBe.getCallbackFunctionBody().toString());
     bindings.put("appDivId", appDivId);
-    bindings.put("vueTemplate", vueTemplate);
+    bindings.put("vueTemplate", getTemplateFromBody());
     bindings.put("vueMethods", vueMethods);
     bindings.put("useLibs", useLibsCode.toString());
     String jsCode = tt.asString(bindings);

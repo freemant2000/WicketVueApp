@@ -41,8 +41,7 @@ public class QuasarDemo extends WebPage {
   public QuasarDemo() {
     state = new HashMap<>();
     state.put("n", 0);
-    WicketVueApp vwa=new WicketVueApp("wva", new Model(state),
-        "<q-btn @click='cb()'>{{n}}</q-btn>") {
+    WicketVueApp vwa=new WicketVueApp("wva", new Model(state)) {
       @Override
       public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
         state.put("n", (Integer)state.get("n")+1);
