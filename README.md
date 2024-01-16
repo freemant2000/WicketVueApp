@@ -36,17 +36,18 @@ public class GetStartedDemo extends WebPage {
     state.put("b", "Hi");
     WicketVueApp vwa=new WicketVueApp("wva", 
         new Model(state), 
-        "<span @click='m1()'>{{a}} {{b}}<span>",
         "m1() {console.log(this.a);}");
     add(vwa);
   }
 }
 ```
-The corresponding HTML markup can be just a `<div>`:
+The template is provided in the HTML markup:
 ```html
 <html>
 <body>
-<div wicket:id="wva"></div>
+<div wicket:id="wva">
+   <span @click='m1()'>{{a}} {{b}}<span>
+</div>
 </body>
 </html>
 ```
@@ -57,18 +58,14 @@ Now, run your Wicket webapp as usual and you will see the Vue app working on you
 
 In the example above, suppose that you want to handle the click on the server side (Wicket), all
 you need to do is to call a js method named "cb" (standing for "call back") as shown below:
-```java
-public class GetStartedDemo extends WebPage {
-  public GetStartedDemo() {
-    HashMap<String, Object> state = new HashMap<>();
-    state.put("a", 4);
-    state.put("b", "Hi");
-    WicketVueApp vwa=new WicketVueApp("wva", 
-        new Model(state), 
-        "<span @click='cb()'>{{a}} {{b}}<span>");
-    add(vwa);
-  }
-}
+```html
+<html>
+<body>
+<div wicket:id="wva">
+   <span @click='cb()'>{{a}} {{b}}<span>
+</div>
+</body>
+</html>
 ```
 This cb method will use Wicket's ajax mechanism to send the request to the Wicket side, where
 you can handle it by overriding the OnVueEvent method:
@@ -79,8 +76,7 @@ public class GetStartedDemo extends WebPage {
     state.put("a", 4);
     state.put("b", "Hi");
     WicketVueApp vwa=new WicketVueApp("wva", 
-        new Model(state), 
-        "<span @click='cb()'>{{a}} {{b}}<span>") {
+        new Model(state)) {
       @Override
       public void onVueEvent(AjaxRequestTarget target, Map<String, Object> data) {
         state.put("b", state.get("b")+"!");
