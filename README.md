@@ -25,7 +25,17 @@ Suppose that you want a Vue app on an HTML page like below:
     </script>
 ```
 And you want to generate this from a Wicket page. To do that, you
-can use the WicketVueApp component provided by this project:
+can use the WicketVueApp component provided by this project.
+
+First, add the dependency:
+```xml
+<dependency>
+   <groupId>com.ttdev</groupId>
+   <artifactId>wicket-vue-app-core</artifactId>
+   <version>1.0.2</version>
+</dependency>
+```
+Your Wicket page should be like:
 ```java
 import com.ttdev.WicketVueApp;
 

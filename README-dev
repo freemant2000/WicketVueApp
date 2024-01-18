@@ -1,0 +1,6 @@
+how to release
+==============
+1) Make sure you have committed.
+2) Make sure there are no dependencies with security vulnerabilities.
+3) mvn release:prepare -Possrh-release. This will update the version numbers.
+4) mvn release:perform -Possrh-release. This will upload the artifacts to ossrh.
