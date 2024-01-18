@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ttdev</groupId>
     <artifactId>wicket-view-app</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Wicket Vue App</name>
     <description>A simple Wicket component to render a Vue app (implemented in just about 130 lines of code)</description>
@@ -27,7 +27,7 @@
         <connection>scm:git:git://github.com/freemant2000/WicketVueApp.git</connection>
         <developerConnection>scm:git:https://github.com/freemant2000/WicketVueApp.git</developerConnection>
         <url>https://github.com/freemant2000/WicketVueApp/tree/master</url>
-      <tag>wicket-view-app-1.0.2</tag>
+      <tag>wicket-view-app-1.0.0</tag>
   </scm>
     <distributionManagement>
         <snapshotRepository>
