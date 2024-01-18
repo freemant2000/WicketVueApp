@@ -32,7 +32,7 @@ First, add the dependency:
 <dependency>
    <groupId>com.ttdev</groupId>
    <artifactId>wicket-vue-app-core</artifactId>
-   <version>1.0.1</version>
+   <version>1.0.2</version>
 </dependency>
 ```
 Your Wicket page should be like:
