@@ -249,7 +249,7 @@ public class WicketVueApp extends Panel {
     for (String u: useLibs) {
       useLibsCode.append(String.format("app.use(%s);", u));
     }
-    TextTemplate tt = new PackageTextTemplate(this.getClass(), "WicketVueApp.js");
+    TextTemplate tt = new PackageTextTemplate(WicketVueApp.class, "WicketVueApp.js");
     Map<String, String> bindings = new HashMap<>();
     bindings.put("initData", getStateAsJsObj());
     bindings.put("ajaxCall", ajaxBe.getCallbackFunctionBody().toString());
