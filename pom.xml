@@ -5,6 +5,9 @@
     <artifactId>wicket-view-app</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>Wicket Vue App</name>
+    <description>A simple Wicket component to render a Vue app (implemented in just about 130 lines of code)</description>
+    <url>https://github.com/freemant2000/WicketVueApp</url>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
