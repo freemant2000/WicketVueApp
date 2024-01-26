@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ttdev</groupId>
-        <artifactId>wicket-view-app</artifactId>
+        <artifactId>wicket-vue-app</artifactId>
         <version>1.0.4-SNAPSHOT</version>
     </parent>
 
